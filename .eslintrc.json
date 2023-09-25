@@ -13,6 +13,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "import/prefer-default-export": ["off", { "target": "any" }]
     }
 }
