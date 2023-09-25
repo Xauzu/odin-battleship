@@ -1,6 +1,6 @@
 import {Gameboard} from './gameboard';
 
-const gb = Gameboard();
+const gb = new Gameboard();
 
 test('Gameboard exist', () => {
     expect(gb).toBeTruthy();
