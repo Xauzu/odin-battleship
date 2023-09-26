@@ -27,14 +27,14 @@ class Gameboard {
         const newShip = new Ship(length);
         let success = false;
         if (vertical && y + length < this.width) {
-            for (let i = y; i < length; i++) {
+            for (let i = y; i < y + length; i++) {
                 const coord = this.getCoordinate(x, i);
                 coord.setShip(newShip);
             }
             success = true;
         }
         else if (!vertical && x + length < this.length) {
-            for (let i = x; i < length; i++) {
+            for (let i = x; i < x + length; i++) {
                 const coord = this.getCoordinate(i, y);
                 coord.setShip(newShip);
             }
@@ -58,6 +58,20 @@ class Gameboard {
         // Ship or null
         if (coord[0])
             coord[0].hit();
+    }
+
+    displayShipGrid() {
+        let result = '';
+        for (let i = 0; i < this.length * this.width; i++) {
+            const x = i % this.length;
+            const y = Math.floor(i / this.length);
+
+            if (x % this.length === 0) result += '\n'
+            const data = this.getCoordinateData(x, y)[0];
+            if (data) result += 'S';
+            else result += '-';
+        }
+        console.log(result);
     }
 }
 
