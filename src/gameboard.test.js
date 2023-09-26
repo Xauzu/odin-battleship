@@ -12,8 +12,15 @@ test('Gameboard getCoordinate', () => {
 });
 
 test('Gameboard placeShips', () => {
-    const test = gb.placeShip(1, 1, 4, false);
-    expect(test).toBeTruthy();
+    const ship = gb.placeShip(1, 1, 4, false);
+    expect(ship).toBeTruthy();
+
+    gb.displayShipGrid();
+
+    // Verify ship in location
+    for (let i = 1; i < i + 4 - 1; i++)
+        expect(gb.getCoordinateData(i, 1)[0]).not.toBeNull();
+
     expect(gb.placeShip(6, 1, 4, false)).toBe(false);
 });
 
