@@ -23,7 +23,7 @@ const setupDisplay = (displayID, length, width) => {
 };
 
 const createGameboardObject = (element) => {
-    const gameboardItem = document.createElement('div');
+    const gameboardItem = document.createElement('button');
     gameboardItem.classList.add('gameboard-item');
     gameboardItem.setAttribute('data-x', element.x);
     gameboardItem.setAttribute('data-y', element.y);
