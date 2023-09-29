@@ -1,4 +1,4 @@
-import {Ship} from './ship';
+import {Ship} from '../ship';
 
 const ship3 = new Ship(3);
 

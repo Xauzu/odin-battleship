@@ -1,4 +1,4 @@
-import {Gameboard} from './gameboard';
+import {Gameboard} from '../gameboard';
 
 const gb = new Gameboard(10, 10);
 

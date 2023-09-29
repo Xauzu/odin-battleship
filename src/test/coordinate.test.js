@@ -1,4 +1,4 @@
-import {Coordinate} from './coordinate';
+import {Coordinate} from '../coordinate';
 
 const coord = new Coordinate(2, 2);
 
