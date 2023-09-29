@@ -18,8 +18,10 @@ test('Gameboard placeShips', () => {
     gb.displayShipGrid();
 
     // Verify ship in location
-    for (let i = 1; i < i + 4 - 1; i++)
+    const start = 1;
+    for (let i = start; i < start + 4; i++) {
         expect(gb.getCoordinateData(i, 1)[0]).not.toBeNull();
+    }
 
     expect(gb.placeShip(6, 1, 4, false)).toBe(false);
 });
