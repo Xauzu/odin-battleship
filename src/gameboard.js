@@ -2,11 +2,13 @@ import {Coordinate} from './coordinate';
 import {Ship} from './ship';
 
 class Gameboard {
-    constructor(length, width) {
+    constructor(length, width, playerID) {
         // Grid size 10x10
+        // playerID 0=main, 1=player2
         this.length = length;
         this.width = width;
         this.grid = Array(length * width).fill();
+        this.playerID = playerID || 0;
         this.#populateGrid();
     }
 
@@ -19,9 +21,7 @@ class Gameboard {
         }
     }
 
-    getGrid() {
-        return this.grid;
-    }
+    getGrid() { return this.grid; }
 
     placeShip(x, y, length, vertical) {
         const newShip = new Ship(length);
@@ -44,13 +44,9 @@ class Gameboard {
         return success ? newShip : false;
     }
 
-    getCoordinate(x, y) {
-        return this.grid[x + y * this.length];
-    }
+    getCoordinate(x, y) { return this.grid[x + y * this.length]; }
 
-    getCoordinateData(x, y) {
-        return this.grid[x + y * this.length].getData();
-    }
+    getCoordinateData(x, y) { return this.grid[x + y * this.length].getData(); }
 
     receiveAttack(x, y) {
         const coord = this.getCoordinate(x, y);
@@ -73,6 +69,8 @@ class Gameboard {
         }
         console.log(result);
     }
+
+    getBoardPlayerID() { return this.playerID; }
 }
 
 export {Gameboard, Coordinate};
