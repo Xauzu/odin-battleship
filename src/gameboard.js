@@ -26,19 +26,35 @@ class Gameboard {
     placeShip(x, y, length, vertical) {
         const newShip = new Ship(length);
         let success = false;
+        let valid = 0;
+
         if (vertical && y + length < this.width) {
             for (let i = y; i < y + length; i++) {
-                const coord = this.getCoordinate(x, i);
-                coord.setShip(newShip);
+                const coord = this.getCoordinateData(x, i);
+                if (coord[0] === null) valid += 1;
             }
-            success = true;
+
+            if (valid >= length) {
+                for (let i = y; i < y + length; i++) {
+                    const coord = this.getCoordinate(x, i);
+                    coord.setShip(newShip);
+                }
+                success = true;
+            }
         }
         else if (!vertical && x + length < this.length) {
             for (let i = x; i < x + length; i++) {
-                const coord = this.getCoordinate(i, y);
-                coord.setShip(newShip);
+                const coord = this.getCoordinateData(i, y);
+                if (coord[0] === null) valid += 1;
             }
-            success = true;
+
+            if (valid >= length) {
+                for (let i = x; i < x + length; i++) {
+                    const coord = this.getCoordinate(i, y);
+                    coord.setShip(newShip);
+                }
+                success = true;
+            }
         }
         
         return success ? newShip : false;
