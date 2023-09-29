@@ -67,10 +67,11 @@ class Gameboard {
             if (data) result += 'S';
             else result += '-';
         }
+        // eslint-disable-next-line no-console
         console.log(result);
     }
 
     getBoardPlayerID() { return this.playerID; }
 }
 
-export {Gameboard, Coordinate};
+export {Gameboard};
