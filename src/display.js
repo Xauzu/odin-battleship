@@ -22,9 +22,10 @@ const setupDisplay = (displayID, length, width) => {
     boardDisplay.style.gridTemplateRows = `repeat(${width}, auto)`;
 };
 
-const createGameboardObject = (element) => {
+const createGameboardObject = (element, displayID) => {
     const gameboardItem = document.createElement('button');
     gameboardItem.classList.add('gameboard-item');
+    gameboardItem.setAttribute('data-side', displayID);
     gameboardItem.setAttribute('data-x', element.x);
     gameboardItem.setAttribute('data-y', element.y);
     gameboardItem.setAttribute('data-hit', element.data[1]);
@@ -38,7 +39,7 @@ const updateDisplay = (displayID, board) => {
     boardDisplay.innerHTML = '';
 
     board.getGrid().forEach(element => {
-        const gameboardItem = createGameboardObject(element);
+        const gameboardItem = createGameboardObject(element, displayID);
 
         // Temp?
         if (element.data[displayID] && displayID === 0)
