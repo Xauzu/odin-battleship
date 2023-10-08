@@ -12,6 +12,10 @@ class Gameboard {
         this.#populateGrid();
     }
 
+    getLength() { return this.length; };
+    
+    getWidth() { return this.width; };
+
     #populateGrid() {
         for (let i = 0; i < this.length * this.width; i++) {
             const x = i % this.length;
