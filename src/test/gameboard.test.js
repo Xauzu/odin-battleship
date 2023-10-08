@@ -23,7 +23,7 @@ test('Gameboard placeShips', () => {
         expect(gb.getCoordinateData(i, 1)[0]).not.toBeNull();
     }
 
-    expect(gb.placeShip(6, 1, 4, false)).toBe(false);
+    expect(gb.placeShip(7, 1, 4, false)).toBe(false);
 });
 
 test('Gameboard receiveAttack', () => {
