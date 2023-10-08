@@ -13,7 +13,7 @@ class Gameboard {
     }
 
     getLength() { return this.length; };
-    
+
     getWidth() { return this.width; };
 
     #populateGrid() {
@@ -32,7 +32,7 @@ class Gameboard {
         let success = false;
         let valid = 0;
 
-        if (vertical && y + length < this.width) {
+        if (vertical && y + length <= this.width) {
             for (let i = y; i < y + length; i++) {
                 const coord = this.getCoordinateData(x, i);
                 if (coord[0] === null) valid += 1;
@@ -46,7 +46,7 @@ class Gameboard {
                 success = true;
             }
         }
-        else if (!vertical && x + length < this.length) {
+        else if (!vertical && x + length <= this.length) {
             for (let i = x; i < x + length; i++) {
                 const coord = this.getCoordinateData(i, y);
                 if (coord[0] === null) valid += 1;
