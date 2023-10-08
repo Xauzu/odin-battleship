@@ -42,7 +42,7 @@ const updateDisplay = (displayID, board) => {
 
         // Temp?
         if (element.data[displayID] && displayID === 0)
-            gameboardItem.textContent = 'S';
+            gameboardItem.textContent = element.data[displayID].getLength();
         else if (element.data[displayID] && displayID === 1)
             gameboardItem.textContent = 'X';
 
