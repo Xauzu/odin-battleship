@@ -4,16 +4,15 @@ import { Gameboard } from './gameboard';
 import './style.css';
 
 const test = 0;
+const gameboards = [];
 
 const generateShipPlacements = (gameboard, shipLengthArray) => {
     const shipLengths = [...shipLengthArray];
     while (shipLengths.length > 0) {
         const shipLength = shipLengths[0];
-        const x = Math.floor(Math.random() * (gameboard.getLength() - shipLength));
-        const y = Math.floor(Math.random() * (gameboard.getWidth() - shipLength));
+        const x = Math.floor(Math.random() * (gameboard.getLength() - shipLength + 1));
+        const y = Math.floor(Math.random() * (gameboard.getWidth() - shipLength + 1));
         const vert = !!Math.floor(Math.random() * 2);
-
-        console.log(shipLengths, 'Attempt:', shipLength, x, y, vert);
 
         const ship = gameboard.placeShip(x, y, shipLength, vert);
         if (ship !== false) {
@@ -22,7 +21,8 @@ const generateShipPlacements = (gameboard, shipLengthArray) => {
     }
 }
 
-const setup = () => {
+// eslint-disable-next-line no-unused-vars
+const setup = (function setup() {
     const length = 10;
     const width = 10;
 
@@ -30,7 +30,6 @@ const setup = () => {
 
     updateMessage('Setting up ...');
 
-    const gameboards = [];
     for (let i = 0; i < 2; i++) {
         const gameboard = new Gameboard(length, width, i);
         gameboards.push(gameboard);
@@ -46,6 +45,4 @@ const setup = () => {
     }
 
     updateMessage('Finished setting up');
-};
-
-setup();
+})();
