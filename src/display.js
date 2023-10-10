@@ -22,14 +22,26 @@ const setupDisplay = (displayID, length, width) => {
     boardDisplay.style.gridTemplateRows = `repeat(${width}, auto)`;
 };
 
-const createGameboardObject = (element, displayID) => {
+function addShootEvent(button, board) {
+    button.addEventListener('click', () => {
+        const x = +button.getAttribute('data-x');
+        const y = +button.getAttribute('data-y');
+        const playerID = +button.getAttribute('data-side');
+        board.getCoordinate(x, y).shoot();
+        // eslint-disable-next-line no-use-before-define
+        updateDisplay(playerID, board);
+    })
+}
+
+const createGameboardObject = (element, displayID, board) => {
     const gameboardItem = document.createElement('button');
     gameboardItem.classList.add('gameboard-item');
     gameboardItem.setAttribute('data-side', displayID);
     gameboardItem.setAttribute('data-x', element.x);
     gameboardItem.setAttribute('data-y', element.y);
     gameboardItem.setAttribute('data-hit', element.data[1]);
-
+    addShootEvent(gameboardItem, board);
+    
     return gameboardItem;
 }
 
@@ -39,7 +51,7 @@ const updateDisplay = (displayID, board) => {
     boardDisplay.innerHTML = '';
 
     board.getGrid().forEach(element => {
-        const gameboardItem = createGameboardObject(element, displayID);
+        const gameboardItem = createGameboardObject(element, displayID, board);
 
         // Temp?
         if (element.data[displayID] && displayID === 0)
