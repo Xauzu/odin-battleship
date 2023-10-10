@@ -15,6 +15,8 @@ class Coordinate {
 
     shoot() {
         this.data[1] = true;
+        if (this.data[0])
+            this.data[0].hit();
     }
 
     isShot() {

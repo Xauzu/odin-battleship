@@ -30,7 +30,7 @@ function addShootEvent(button, board) {
         board.getCoordinate(x, y).shoot();
         // eslint-disable-next-line no-use-before-define
         updateDisplay(playerID, board);
-    })
+    });
 }
 
 const createGameboardObject = (element, displayID, board) => {
@@ -39,9 +39,18 @@ const createGameboardObject = (element, displayID, board) => {
     gameboardItem.setAttribute('data-side', displayID);
     gameboardItem.setAttribute('data-x', element.x);
     gameboardItem.setAttribute('data-y', element.y);
-    gameboardItem.setAttribute('data-hit', element.data[1]);
-    addShootEvent(gameboardItem, board);
-    
+
+    if (element.data[1]) {
+        gameboardItem.disabled = true;
+        if (element.data[0]) {
+            gameboardItem.classList.add('ship-hit');
+        }
+    }
+    else {
+        gameboardItem.setAttribute('data-hit', element.data[1]);
+        addShootEvent(gameboardItem, board);    
+    }
+
     return gameboardItem;
 }
 
@@ -56,8 +65,16 @@ const updateDisplay = (displayID, board) => {
         // Temp?
         if (element.data[displayID] && displayID === 0)
             gameboardItem.textContent = element.data[displayID].getLength();
-        else if (element.data[displayID] && displayID === 1)
-            gameboardItem.textContent = 'X';
+        else if (element.data[displayID] && displayID === 1) {
+            let displayText = 'X';
+
+            const ship = element.data[0];
+            if (ship && ship.isSunk()) {
+                displayText = ship.getLength();
+            }
+
+            gameboardItem.textContent = displayText;
+        }
 
         boardDisplay.appendChild(gameboardItem);
     });
