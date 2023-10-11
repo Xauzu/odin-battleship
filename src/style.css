@@ -74,3 +74,7 @@ html, body {
 .has-ship {
     border: blue 2px solid;
 }
+
+.hide {
+    display: none;
+}
