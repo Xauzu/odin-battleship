@@ -18,7 +18,7 @@ const addTestButtons = function addTestButtons(length, width) {
     autoPlaceButton.textContent = 'Auto Place Ships';
     autoPlaceButton.addEventListener('click', () => {
         autoPlaceButton.disabled = true;
-        gameboards[0].generateShipPlacement([5, 4, 3, 3, 2]);
+        gameboards[0].generateShipPlacement();
         updateDisplay(0, gameboards[0]);
     }); // Temp hardcoded array
     buttonContainer.appendChild(autoPlaceButton);
@@ -54,11 +54,11 @@ const setup = (function setup() {
         setupDisplay(i, length, width);
     }
 
-    const shipLengths = [5, 4, 3, 3, 2];
+    // const shipLengths = [5, 4, 3, 3, 2];
     for (let i = 0; i < 2; i++) {
         // Ai board
         if (i === 1)
-            gameboards[i].generateShipPlacement(shipLengths);
+            gameboards[i].generateShipPlacement();
         updateDisplay(i, gameboards[i]);
     }
 

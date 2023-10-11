@@ -2,13 +2,14 @@ import {Coordinate} from './coordinate';
 import {Ship} from './ship';
 
 class Gameboard {
-    constructor(length, width, playerID) {
+    constructor(length, width, playerID, pendingShipList) {
         // Grid size 10x10
         // playerID 0=main, 1=player2
         this.length = length;
         this.width = width;
         this.grid = Array(length * width).fill();
         this.playerID = playerID || 0;
+        this.pendingShipList = pendingShipList || [5, 4, 3, 3, 2];
         this.#populateGrid();
     }
 
@@ -94,7 +95,7 @@ class Gameboard {
     getBoardPlayerID() { return this.playerID; }
 
     generateShipPlacement(shipLengthArray) {
-            const shipLengths = [...shipLengthArray];
+            const shipLengths = shipLengthArray ? [...shipLengthArray] : this.pendingShipList;
             while (shipLengths.length > 0) {
                 const shipLength = shipLengths[0];
                 const x = Math.floor(Math.random() * (this.length - shipLength + 1));
