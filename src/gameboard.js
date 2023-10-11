@@ -17,6 +17,8 @@ class Gameboard {
 
     getWidth() { return this.width; };
 
+    getPendingShips() { return this.pendingShipList; };
+
     #populateGrid() {
         for (let i = 0; i < this.length * this.width; i++) {
             const x = i % this.length;
