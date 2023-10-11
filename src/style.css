@@ -55,3 +55,15 @@ html, body {
 #auto-place-button, #shoot-all-button {
     width: fit-content;
 }
+
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: red;
+}
+
+.has-ship {
+    background-color: blue;
+}
