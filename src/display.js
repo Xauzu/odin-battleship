@@ -1,5 +1,6 @@
 const mainSetup = () => {
     const content = document.querySelector('#content');
+    content.setAttribute('data-state', 0);
 
     const messageDisplay = document.createElement('div');
     messageDisplay.id = 'message-display';
@@ -13,6 +14,10 @@ const mainSetup = () => {
         gameboardRow.appendChild(gameboardDisplay);
     }
     content.appendChild(gameboardRow);
+
+    const optionRow = document.createElement('div');
+    optionRow.id = 'option-row';
+    content.appendChild(optionRow);
 };
 
 const setupDisplay = (displayID, length, width) => {
@@ -33,22 +38,39 @@ function addShootEvent(button, board) {
     });
 }
 
-const createGameboardObject = (element, displayID, board) => {
+function addColorEvent(button, board, color) {
+    
+}
+
+const createGameboardObject = (element, displayID, board, gameState) => {
     const gameboardItem = document.createElement('button');
     gameboardItem.classList.add('gameboard-item');
     gameboardItem.setAttribute('data-side', displayID);
     gameboardItem.setAttribute('data-x', element.x);
     gameboardItem.setAttribute('data-y', element.y);
 
-    if (element.data[1]) {
-        gameboardItem.disabled = true;
-        if (element.data[0]) {
-            gameboardItem.classList.add('ship-hit');
+    // Enemy board
+    if (displayID === 1) {
+        if (element.data[1]) {
+            gameboardItem.disabled = true;
+            if (element.data[0]) {
+                gameboardItem.classList.add('ship-hit');
+            }
+        }
+        else {
+            gameboardItem.setAttribute('data-hit', element.data[1]);
+            addShootEvent(gameboardItem, board);    
         }
     }
     else {
-        gameboardItem.setAttribute('data-hit', element.data[1]);
-        addShootEvent(gameboardItem, board);    
+        // Player board, ship placement stage
+        if (gameState === '0' && !element.data[0]) {
+            addColorEvent(gameboardItem, board);
+        }
+        else {
+            if (element.data[0]) gameboardItem.classList.add('has-ship');
+            gameboardItem.disabled = true;
+        }
     }
 
     return gameboardItem;
@@ -60,9 +82,9 @@ const updateDisplay = (displayID, board) => {
     boardDisplay.innerHTML = '';
 
     board.getGrid().forEach(element => {
-        const gameboardItem = createGameboardObject(element, displayID, board);
+        const gameState = document.querySelector('#content').getAttribute('data-state');
+        const gameboardItem = createGameboardObject(element, displayID, board, gameState);
 
-        // Temp?
         if (element.data[displayID] && displayID === 0)
             gameboardItem.textContent = element.data[displayID].getLength();
         else if (element.data[displayID] && displayID === 1) {
