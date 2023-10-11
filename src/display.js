@@ -18,6 +18,15 @@ const mainSetup = () => {
     const optionRow = document.createElement('div');
     optionRow.id = 'option-row';
     content.appendChild(optionRow);
+    
+    const vertical = document.createElement('input');
+    vertical.id = 'vertical-checkbox';
+    vertical.type = 'checkbox';
+    optionRow.appendChild(vertical);
+    const verticalLabel = document.createElement('label');
+    verticalLabel.for = 'vertical-checkbox';
+    verticalLabel.textContent = 'Vertical?';
+    optionRow.appendChild(verticalLabel);
 };
 
 const setupDisplay = (displayID, length, width) => {
@@ -38,13 +47,56 @@ function addShootEvent(button, board) {
     });
 }
 
-function addColorEvent(button, board, color) {
-    
+function addColorEvent(button, board) {
+    button.addEventListener('mouseover', () => {
+        const x = +button.getAttribute('data-x');
+        const y = +button.getAttribute('data-y');
+        const length = board.getPendingShips()[0];
+        const vertical = document.querySelector('#vertical-checkbox').checked;
+
+        let valid = 0;
+        for (let i = 0; i < length; i++) {
+            if (vertical && y + i < board.getWidth() && board.getCoordinateData(x, y + i)[0] === null) valid += 1; 
+            else if (!vertical && x + i < board.getLength() && board.getCoordinateData(x + i, y)[0] === null) valid += 1;
+        }
+
+        let color = 'red';
+        if (valid === length) color = 'green';
+
+        for (let i = 0; i < length; i++) {
+            let targetX = x;
+            let targetY = y;
+            if (vertical) targetY = y + i; 
+            else targetX = x + i;
+
+            // gameboard-item-0-4-2
+            const item = document.querySelector(`.gameboard-item-0-${targetX}-${targetY}`);
+            if (item)
+                item.classList.add(color);
+        }
+    });
+    button.addEventListener('mouseout', () => {
+        const x = +button.getAttribute('data-x');
+        const y = +button.getAttribute('data-y');
+        const length = board.getPendingShips()[0];
+        const vertical = document.querySelector('#vertical-checkbox').checked;
+        for (let i = 0; i < length; i++) {
+            let targetX = x;
+            let targetY = y;
+            if (vertical) targetY = y + i; 
+            else targetX = x + i;
+
+            // gameboard-item-0-4-2
+            const item = document.querySelector(`.gameboard-item-0-${targetX}-${targetY}`);
+            if (item)
+                item.classList.remove('red', 'green');
+        }
+    });
 }
 
 const createGameboardObject = (element, displayID, board, gameState) => {
     const gameboardItem = document.createElement('button');
-    gameboardItem.classList.add('gameboard-item');
+    gameboardItem.classList.add(`gameboard-item-${displayID}-${element.x}-${element.y}`);
     gameboardItem.setAttribute('data-side', displayID);
     gameboardItem.setAttribute('data-x', element.x);
     gameboardItem.setAttribute('data-y', element.y);
