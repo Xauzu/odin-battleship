@@ -30,34 +30,32 @@ class Gameboard {
 
     getGrid() { return this.grid; }
 
+    verifyShipPlacement(x, y, length, vertical) {
+        let valid = 0;
+        for (let i = 0; i < length; i++) {
+            if (vertical && y + i < this.width && this.getCoordinateData(x, y + i)[0] === null) valid += 1; 
+            else if (!vertical && x + i < this.length && this.getCoordinateData(x + i, y)[0] === null) valid += 1;
+        }
+        return valid === length;
+    }
+
     placeShip(x, y, length, vertical) {
         const newShip = new Ship(length);
         let success = false;
-        let valid = 0;
 
-        if (vertical && y + length <= this.width) {
-            for (let i = y; i < y + length; i++) {
-                const coord = this.getCoordinateData(x, i);
-                if (coord[0] === null) valid += 1;
-            }
-
-            if (valid >= length) {
-                for (let i = y; i < y + length; i++) {
-                    const coord = this.getCoordinate(x, i);
+        if (vertical) {
+            if (this.verifyShipPlacement(x, y, length, vertical)) {
+                for (let i = 0; i < length; i++) {
+                    const coord = this.getCoordinate(x, y + i);
                     coord.setShip(newShip);
                 }
                 success = true;
             }
         }
-        else if (!vertical && x + length <= this.length) {
-            for (let i = x; i < x + length; i++) {
-                const coord = this.getCoordinateData(i, y);
-                if (coord[0] === null) valid += 1;
-            }
-
-            if (valid >= length) {
-                for (let i = x; i < x + length; i++) {
-                    const coord = this.getCoordinate(i, y);
+        else {
+            if (this.verifyShipPlacement(x, y, length, vertical)) {
+                for (let i = 0; i < length; i++) {
+                    const coord = this.getCoordinate(x + i, y);
                     coord.setShip(newShip);
                 }
                 success = true;
