@@ -47,6 +47,32 @@ function addShootEvent(button, board) {
     });
 }
 
+function addShipEvent(button, board) {
+    button.addEventListener('click', () => {
+        const x = +button.getAttribute('data-x');
+        const y = +button.getAttribute('data-y');
+        const length = board.getPendingShips()[0];
+        const vertical = document.querySelector('#vertical-checkbox').checked;
+        if (board.placeShip(x, y, length, vertical) !== false) {
+            board.getPendingShips().shift();
+
+            if (board.getPendingShips().length === 0) {
+                const content = document.querySelector('#content');
+                content.setAttribute('data-state', 1);
+                updateDisplay(0, board);
+
+                document.querySelector('#option-row', '#auto-place-button').classList.add('hide');
+            }
+            else {
+                const nextShip = board.getPendingShips()[0];
+                updateMessage(`Place your ship: Ship(${nextShip})`);
+                updateDisplay(0, board);
+            }
+
+        }
+    });
+}
+
 function addColorEvent(button, board) {
     button.addEventListener('mouseover', () => {
         const x = +button.getAttribute('data-x');
@@ -54,14 +80,8 @@ function addColorEvent(button, board) {
         const length = board.getPendingShips()[0];
         const vertical = document.querySelector('#vertical-checkbox').checked;
 
-        let valid = 0;
-        for (let i = 0; i < length; i++) {
-            if (vertical && y + i < board.getWidth() && board.getCoordinateData(x, y + i)[0] === null) valid += 1; 
-            else if (!vertical && x + i < board.getLength() && board.getCoordinateData(x + i, y)[0] === null) valid += 1;
-        }
-
         let color = 'red';
-        if (valid === length) color = 'green';
+        if (board.verifyShipPlacement(x, y, length, vertical)) color = 'green';
 
         for (let i = 0; i < length; i++) {
             let targetX = x;
@@ -117,6 +137,7 @@ const createGameboardObject = (element, displayID, board, gameState) => {
     else {
         // Player board, ship placement stage
         if (gameState === '0' && !element.data[0]) {
+            addShipEvent(gameboardItem, board);
             addColorEvent(gameboardItem, board);
         }
         else {
