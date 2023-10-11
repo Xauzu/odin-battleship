@@ -92,6 +92,21 @@ class Gameboard {
     }
 
     getBoardPlayerID() { return this.playerID; }
+
+    generateShipPlacement(shipLengthArray) {
+            const shipLengths = [...shipLengthArray];
+            while (shipLengths.length > 0) {
+                const shipLength = shipLengths[0];
+                const x = Math.floor(Math.random() * (this.length - shipLength + 1));
+                const y = Math.floor(Math.random() * (this.width - shipLength + 1));
+                const vert = !!Math.floor(Math.random() * 2);
+        
+                const ship = this.placeShip(x, y, shipLength, vert);
+                if (ship !== false) {
+                    shipLengths.shift();
+                }
+            }
+    }
 }
 
 export {Gameboard};

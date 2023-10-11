@@ -6,21 +6,6 @@ import './style.css';
 const test = 1;
 const gameboards = [];
 
-const generateShipPlacements = (gameboard, shipLengthArray) => {
-    const shipLengths = [...shipLengthArray];
-    while (shipLengths.length > 0) {
-        const shipLength = shipLengths[0];
-        const x = Math.floor(Math.random() * (gameboard.getLength() - shipLength + 1));
-        const y = Math.floor(Math.random() * (gameboard.getWidth() - shipLength + 1));
-        const vert = !!Math.floor(Math.random() * 2);
-
-        const ship = gameboard.placeShip(x, y, shipLength, vert);
-        if (ship !== false) {
-            shipLengths.shift();
-        }
-    }
-}
-
 const addTestButtons = function addTestButtons(length, width) {
     const content = document.querySelector('#content');
 
@@ -32,7 +17,8 @@ const addTestButtons = function addTestButtons(length, width) {
     autoPlaceButton.id = 'auto-place-button';
     autoPlaceButton.textContent = 'Auto Place Ships';
     autoPlaceButton.addEventListener('click', () => {
-        generateShipPlacements(gameboards[0], [5, 4, 3, 3, 2])
+        autoPlaceButton.disabled = true;
+        gameboards[0].generateShipPlacement([5, 4, 3, 3, 2]);
         updateDisplay(0, gameboards[0]);
     }); // Temp hardcoded array
     buttonContainer.appendChild(autoPlaceButton);
@@ -41,13 +27,14 @@ const addTestButtons = function addTestButtons(length, width) {
     shootAllButton.id = 'shoot-all-button';
     shootAllButton.textContent = 'Shoot All Coordinates';
     shootAllButton.addEventListener('click', () => {
+        shootAllButton.disabled = true;
         for (let i = 0; i < length * width; i++) {
             const x = i % length;
             const y = Math.floor(i / length);
             gameboards[1].getCoordinate(x, y).shoot();
         }
         updateDisplay(1, gameboards[1]);
-    }); // Temp hardcoded array
+    });
     buttonContainer.appendChild(shootAllButton);
 }
 
@@ -71,7 +58,7 @@ const setup = (function setup() {
     for (let i = 0; i < 2; i++) {
         // Ai board
         if (i === 1)
-            generateShipPlacements(gameboards[i], shipLengths);
+            gameboards[i].generateShipPlacement(shipLengths);
         updateDisplay(i, gameboards[i]);
     }
 
