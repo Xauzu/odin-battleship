@@ -6,6 +6,14 @@ import './style.css';
 const test = 1;
 const gameboards = [];
 
+// 0 = ship placement
+// 1 = game
+// 2 = end
+function updateGameState(state) {
+    const content = document.querySelector('#content');
+    content.setAttribute('data-state', state);
+}
+
 const addTestButtons = function addTestButtons(length, width) {
     const content = document.querySelector('#content');
 
@@ -18,7 +26,8 @@ const addTestButtons = function addTestButtons(length, width) {
     autoPlaceButton.textContent = 'Auto Place Ships';
     autoPlaceButton.addEventListener('click', () => {
         autoPlaceButton.disabled = true;
-        gameboards[0].generateShipPlacement();
+        gameboards[0].generateShipPlacement(gameboards[0].getPendingShips());
+        updateGameState(1);
         updateDisplay(0, gameboards[0]);
     }); // Temp hardcoded array
     buttonContainer.appendChild(autoPlaceButton);
@@ -65,4 +74,9 @@ const setup = (function setup() {
     if (test) addTestButtons(length, width);
 
     updateMessage('Finished setting up');
+
+    updateGameState(0);
+
+    const nextShip = gameboards[0].getPendingShips()[0];
+    updateMessage(`Place your ship: Ship(${nextShip})`);
 })();
