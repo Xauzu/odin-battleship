@@ -1,5 +1,4 @@
 Todo List
 ----
-- Add game logic
-- Test display with game logic
-- Update css display for shots (missed, hit, ship destroyed)
+- Add end check in display(#52)
+- Add bot ai
