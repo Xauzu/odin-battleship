@@ -127,8 +127,9 @@ class Gameboard {
 
     shoot(x, y) {
         this.getCoordinate(x, y).shoot();
-        
-        // Check game condition
+        if (this.checkEndCondition()) {
+            document.querySelector('#content').setAttribute('data-state', 2);
+        }
     }
 
 }

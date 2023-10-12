@@ -1,4 +1,4 @@
-import { mainSetup, setupDisplay, updateDisplay, updateMessage } from './display';
+import { setGameboards, mainSetup, setupDisplay, updateDisplay, updateMessage } from './display';
 import { Gameboard } from './gameboard';
 
 import './style.css';
@@ -28,8 +28,9 @@ const addTestButtons = function addTestButtons(length, width) {
         autoPlaceButton.disabled = true;
         gameboards[0].generateShipPlacement(gameboards[0].getPendingShips());
         updateGameState(1);
-        updateDisplay(0, gameboards[0]);
-    }); // Temp hardcoded array
+        for (let i = 0; i < 2; i++)
+            updateDisplay(i, gameboards[i]);
+    });
     buttonContainer.appendChild(autoPlaceButton);
 
     const shootAllButton = document.createElement('button');
@@ -42,7 +43,9 @@ const addTestButtons = function addTestButtons(length, width) {
             const y = Math.floor(i / length);
             gameboards[1].getCoordinate(x, y).shoot();
         }
-        updateDisplay(1, gameboards[1]);
+
+        for (let i = 0; i < 2; i++)
+            updateDisplay(i, gameboards[i]);
     });
     buttonContainer.appendChild(shootAllButton);
 }
@@ -62,6 +65,7 @@ const setup = (function setup() {
 
         setupDisplay(i, length, width);
     }
+    setGameboards(gameboards);
 
     // const shipLengths = [5, 4, 3, 3, 2];
     for (let i = 0; i < 2; i++) {

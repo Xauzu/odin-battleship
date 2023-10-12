@@ -65,7 +65,7 @@ function addShipEvent(button, board) {
                 updateMessage('Choose a coordinate to shoot.')
 
                 for (let i = 0; i < 2; i++)
-                    updateDisplay(0, gameboards[i]);
+                    updateDisplay(i, gameboards[i]);
 
                 document.querySelector('#option-row').classList.add('hide');
                 document.querySelector('#auto-place-button').disabled = true;
@@ -130,7 +130,7 @@ const createGameboardObject = (element, displayID, board, gameState) => {
 
     // Enemy board
     if (displayID === 1) {
-        if (gameState !== 1) gameboardItem.disabled = true;
+        if (gameState !== '1') gameboardItem.disabled = true;
 
         if (element.data[1]) {
             gameboardItem.disabled = true;
