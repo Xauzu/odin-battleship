@@ -1,6 +1,7 @@
 class Player {
-    constructor(name) {
+    constructor(name, isAi) {
         this.name = name;
+        this.isAi = isAi || false;
     }
 
     setName(name) {
