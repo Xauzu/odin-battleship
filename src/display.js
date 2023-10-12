@@ -44,9 +44,16 @@ function addShootEvent(button, board) {
         const x = +button.getAttribute('data-x');
         const y = +button.getAttribute('data-y');
         const playerID = +button.getAttribute('data-side');
-        board.shoot(x, y);
-        // eslint-disable-next-line no-use-before-define
+        const result = board.shoot(x, y);
         updateDisplay(playerID, board);
+
+        // End
+        if (result) {
+            updateDisplay(1, gameboards[1]);
+
+            if (gameboards[0].checkEndCondition()) updateMessage(`${gameboards[1].getPlayer().getName()} Wins!`);
+            else updateMessage(`${gameboards[0].getPlayer().getName()} Wins!`);
+        }
     });
 }
 
@@ -62,7 +69,7 @@ function addShipEvent(button, board) {
             if (board.getPendingShips().length === 0) {
                 const content = document.querySelector('#content');
                 content.setAttribute('data-state', 1);
-                updateMessage('Choose a coordinate to shoot.')
+                updateMessage('Choose a coordinate to shoot.');
 
                 for (let i = 0; i < 2; i++)
                     updateDisplay(i, gameboards[i]);
@@ -96,7 +103,6 @@ function addColorEvent(button, board) {
             if (vertical) targetY = y + i; 
             else targetX = x + i;
 
-            // gameboard-item-0-4-2
             const item = document.querySelector(`.gameboard-item-0-${targetX}-${targetY}`);
             if (item)
                 item.classList.add(color);
@@ -113,7 +119,6 @@ function addColorEvent(button, board) {
             if (vertical) targetY = y + i; 
             else targetX = x + i;
 
-            // gameboard-item-0-4-2
             const item = document.querySelector(`.gameboard-item-0-${targetX}-${targetY}`);
             if (item)
                 item.classList.remove('red', 'green');
