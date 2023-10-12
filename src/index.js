@@ -30,6 +30,7 @@ const addTestButtons = function addTestButtons(length, width) {
         updateGameState(1);
         for (let i = 0; i < 2; i++)
             updateDisplay(i, gameboards[i]);
+        updateMessage('Choose a coordinate to shoot.');
     });
     buttonContainer.appendChild(autoPlaceButton);
 
