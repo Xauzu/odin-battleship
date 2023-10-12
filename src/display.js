@@ -1,3 +1,6 @@
+let gameboards = []
+const setGameboards = (gb) => { gameboards = gb; };
+
 const mainSetup = () => {
     const content = document.querySelector('#content');
     content.setAttribute('data-state', 0);
@@ -41,7 +44,7 @@ function addShootEvent(button, board) {
         const x = +button.getAttribute('data-x');
         const y = +button.getAttribute('data-y');
         const playerID = +button.getAttribute('data-side');
-        board.getCoordinate(x, y).shoot();
+        board.shoot(x, y);
         // eslint-disable-next-line no-use-before-define
         updateDisplay(playerID, board);
     });
@@ -59,9 +62,13 @@ function addShipEvent(button, board) {
             if (board.getPendingShips().length === 0) {
                 const content = document.querySelector('#content');
                 content.setAttribute('data-state', 1);
-                updateDisplay(0, board);
+                updateMessage('Choose a coordinate to shoot.')
 
-                document.querySelector('#option-row', '#auto-place-button').classList.add('hide');
+                for (let i = 0; i < 2; i++)
+                    updateDisplay(0, gameboards[i]);
+
+                document.querySelector('#option-row').classList.add('hide');
+                document.querySelector('#auto-place-button').disabled = true;
             }
             else {
                 const nextShip = board.getPendingShips()[0];
@@ -123,6 +130,8 @@ const createGameboardObject = (element, displayID, board, gameState) => {
 
     // Enemy board
     if (displayID === 1) {
+        if (gameState !== 1) gameboardItem.disabled = true;
+
         if (element.data[1]) {
             gameboardItem.disabled = true;
             if (element.data[0]) {
@@ -180,4 +189,4 @@ const updateMessage = (message) => {
     messageDisplay.textContent = message;
 };
 
-export {mainSetup, setupDisplay, updateDisplay, updateMessage};
+export {setGameboards, mainSetup, setupDisplay, updateDisplay, updateMessage};
