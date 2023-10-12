@@ -129,11 +129,20 @@ class Gameboard {
         return hits === shipParts;
     }
 
+    isValidShot(x, y) {
+        let valid = true;
+        if (x < 0 || x > this.length || y < 0 || y > this.width) valid = false;
+        if (this.getCoordinateData(x, y)[1] === true) valid = false;
+        return valid;
+    }
+
     shoot(x, y) {
-        this.getCoordinate(x, y).shoot();
-        if (this.checkEndCondition()) {
-            document.querySelector('#content').setAttribute('data-state', 2);
-            return true;
+        if (this.isValidShot(x, y)) {
+            this.getCoordinate(x, y).shoot();
+            if (this.checkEndCondition()) {
+                document.querySelector('#content').setAttribute('data-state', 2);
+                return true;
+            }
         }
         return false;
     }
