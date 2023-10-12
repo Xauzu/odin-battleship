@@ -129,7 +129,9 @@ class Gameboard {
         this.getCoordinate(x, y).shoot();
         if (this.checkEndCondition()) {
             document.querySelector('#content').setAttribute('data-state', 2);
+            return true;
         }
+        return false;
     }
 
 }
