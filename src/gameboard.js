@@ -95,19 +95,42 @@ class Gameboard {
     getBoardPlayerID() { return this.playerID; }
 
     generateShipPlacement(shipLengthArray) {
-            const shipLengths = shipLengthArray ? [...shipLengthArray] : this.pendingShipList;
-            while (shipLengths.length > 0) {
-                const shipLength = shipLengths[0];
-                const x = Math.floor(Math.random() * (this.length - shipLength + 1));
-                const y = Math.floor(Math.random() * (this.width - shipLength + 1));
-                const vert = !!Math.floor(Math.random() * 2);
-        
-                const ship = this.placeShip(x, y, shipLength, vert);
-                if (ship !== false) {
-                    shipLengths.shift();
-                }
+        const shipLengths = shipLengthArray ? [...shipLengthArray] : this.pendingShipList;
+        while (shipLengths.length > 0) {
+            const shipLength = shipLengths[0];
+            const x = Math.floor(Math.random() * (this.length - shipLength + 1));
+            const y = Math.floor(Math.random() * (this.width - shipLength + 1));
+            const vert = !!Math.floor(Math.random() * 2);
+    
+            const ship = this.placeShip(x, y, shipLength, vert);
+            if (ship !== false) {
+                shipLengths.shift();
             }
+        }
     }
+
+    checkEndCondition() {
+        let hits = 0;
+        let shipParts = 0;
+        for (let i = 0; i < this.grid.length; i++) {
+            const x = i % this.length;
+            const y = Math.floor(i / this.length);
+            const coordData = this.getCoordinateData(x, y);
+            if (coordData[0]) {
+                shipParts += 1;
+                if (coordData[1]) hits += 1;
+            }
+        }
+
+        return hits === shipParts;
+    }
+
+    shoot(x, y) {
+        this.getCoordinate(x, y).shoot();
+        
+        // Check game condition
+    }
+
 }
 
 export {Gameboard};
