@@ -13,6 +13,10 @@ class Gameboard {
         this.#populateGrid();
     }
 
+    setPlayer(gamePlayer) { this.player = gamePlayer; };
+
+    getPlayer() { return this.player; };
+
     getLength() { return this.length; };
 
     getWidth() { return this.width; };

@@ -1,9 +1,10 @@
 import { setGameboards, mainSetup, setupDisplay, updateDisplay, updateMessage } from './display';
 import { Gameboard } from './gameboard';
+import { Player } from './player';
 
 import './style.css';
 
-const test = 1;
+const test = 0;
 const gameboards = [];
 
 // 0 = ship placement
@@ -63,6 +64,13 @@ const setup = (function setup() {
     for (let i = 0; i < 2; i++) {
         const gameboard = new Gameboard(length, width, i);
         gameboards.push(gameboard);
+
+        if (i === 0) {
+            gameboard.setPlayer(new Player('Player 1'));
+        }
+        else {
+            gameboard.setPlayer(new Player('Ai', true));
+        }
 
         setupDisplay(i, length, width);
     }
