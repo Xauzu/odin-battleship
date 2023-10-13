@@ -130,10 +130,9 @@ class Gameboard {
     }
 
     isValidShot(x, y) {
-        let valid = true;
-        if (x < 0 || x > this.length || y < 0 || y > this.width) valid = false;
-        if (this.getCoordinateData(x, y)[1] === true) valid = false;
-        return valid;
+        if (x < 0 || x > this.length || y < 0 || y > this.width) return false;
+        if (this.getCoordinateData(x, y)[1] === true) return false;
+        return true;
     }
 
     shoot(x, y) {
@@ -143,8 +142,9 @@ class Gameboard {
                 document.querySelector('#content').setAttribute('data-state', 2);
                 return true;
             }
+            return false;
         }
-        return false;
+        return -1;
     }
 
 }
