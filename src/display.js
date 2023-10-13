@@ -39,6 +39,11 @@ const setupDisplay = (displayID, length, width) => {
     boardDisplay.style.gridTemplateRows = `repeat(${width}, auto)`;
 };
 
+function checkAndDisplayResults() {
+    if (gameboards[0].checkEndCondition()) updateMessage(`${gameboards[1].getPlayer().getName()} Wins!`);
+    else if (gameboards[1].checkEndCondition())updateMessage(`${gameboards[0].getPlayer().getName()} Wins!`);
+}
+
 function addShootEvent(button, board) {
     button.addEventListener('click', () => {
         const x = +button.getAttribute('data-x');
@@ -50,9 +55,12 @@ function addShootEvent(button, board) {
         // End
         if (result) {
             updateDisplay(1, gameboards[1]);
-
-            if (gameboards[0].checkEndCondition()) updateMessage(`${gameboards[1].getPlayer().getName()} Wins!`);
-            else updateMessage(`${gameboards[0].getPlayer().getName()} Wins!`);
+            checkAndDisplayResults();
+        }
+        else if (playerID === 1) {
+            gameboards[1].getPlayer().shootNext(gameboards[0]);
+            updateDisplay(0, gameboards[0]);
+            checkAndDisplayResults();
         }
     });
 }
@@ -75,7 +83,8 @@ function addShipEvent(button, board) {
                     updateDisplay(i, gameboards[i]);
 
                 document.querySelector('#option-row').classList.add('hide');
-                document.querySelector('#auto-place-button').disabled = true;
+                const apbutton = document.querySelector('#auto-place-button');
+                if (apbutton) apbutton.disabled = true;
             }
             else {
                 const nextShip = board.getPendingShips()[0];
@@ -133,15 +142,17 @@ const createGameboardObject = (element, displayID, board, gameState) => {
     gameboardItem.setAttribute('data-x', element.x);
     gameboardItem.setAttribute('data-y', element.y);
 
+    if (element.data[0]) {
+        if (element.data[1])
+            gameboardItem.classList.add('ship-hit');
+    }
+
     // Enemy board
     if (displayID === 1) {
         if (gameState !== '1') gameboardItem.disabled = true;
 
         if (element.data[1]) {
             gameboardItem.disabled = true;
-            if (element.data[0]) {
-                gameboardItem.classList.add('ship-hit');
-            }
         }
         else {
             gameboardItem.setAttribute('data-hit', element.data[1]);
@@ -172,16 +183,19 @@ const updateDisplay = (displayID, board) => {
         const gameState = document.querySelector('#content').getAttribute('data-state');
         const gameboardItem = createGameboardObject(element, displayID, board, gameState);
 
+        let displayText = 'X';
         if (element.data[displayID] && displayID === 0)
             gameboardItem.textContent = element.data[displayID].getLength();
         else if (element.data[displayID] && displayID === 1) {
-            let displayText = 'X';
-
             const ship = element.data[0];
             if (ship && ship.isSunk()) {
                 displayText = ship.getLength();
             }
 
+            gameboardItem.textContent = displayText;
+        }
+        else if (element.data[1]) {
+            gameboardItem.classList.add('yellow');
             gameboardItem.textContent = displayText;
         }
 

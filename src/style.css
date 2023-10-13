@@ -71,6 +71,10 @@ html, body {
     background-color: red;
 }
 
+.yellow {
+    background-color: yellow;
+}
+
 .has-ship {
     border: blue 2px solid;
 }
